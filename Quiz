@@ -153,17 +153,50 @@ public class Quiz {
                     ";";
         }
     }
+    
+    public class Trapezium extends Shape {
 
-    public static void main(String[] args) {
+        private final double a;
+        private final double b;
+        private final double c;
+        private final double d;
+
+        public Trapezium(double a_, double b_, double c_d, Color color_){
+            super(color_);
+            this.a = a_;
+            this.b = b_;
+            this.c = c_d;
+            this.d = c_d;
+        }
+
+        public double getHeight() {
+            double p = (a > b)?(a - b)/2:(b - a)/2;
+            return Math.sqrt((c * c) - (p * p));
+        }
+
+        @Override
+        public double getArea() {return ((a + b)*getHeight())/2;}
+
+
+        @Override
+        public String toString(){
+            return "Shape: Trapezium, " +
+                    "Area: " + String.format("%.2f", getArea()) +
+                    ", height: " + String.format("%.2f", getHeight()) +
+                    ", color: " + getColor() +
+                    ";";
+        }
+    }
+
+        public static void main(String[] args) {
 
         Random r = new Random();
 
-        int size_i = r.nextInt(10) + 1;
-        Shape [] shapes = new Shape[size_i];
+        Shape [] shapes = new Shape[r.nextInt(10) + 1];
 
 
         for (int i = 0; i < shapes.length; i++) {
-            int which_shape = r.nextInt(3);
+            int which_shape = r.nextInt(4);
             if (which_shape == 0)
                 shapes[i] = new Quiz().new Circle(
                         new Quiz().new Point(r.nextInt(10), r.nextInt(10)),
@@ -171,12 +204,18 @@ public class Quiz {
                         Color.getRandomColor());
             else if (which_shape == 1)
                 shapes[i] = new Quiz().new RightTriangle(
-                        r.nextInt(10),
-                        r.nextDouble() * 10,
+                        r.nextDouble() * 10 + 1,
+                        r.nextDouble() * 10 + 1,
                         Color.getRandomColor());
             else if (which_shape == 2)
                 shapes[i] = new Quiz().new Square(
-                        r.nextInt(10),
+                        r.nextDouble() * 10 +1,
+                        Color.getRandomColor());
+            else if (which_shape == 3)
+                shapes[i] = new Quiz().new Trapezium( //трапеция
+                        r.nextDouble() * 10 +1,
+                        r.nextDouble() * 10 +1,
+                        r.nextDouble() * 10 +1,
                         Color.getRandomColor());
 
             System.out.println(shapes[i]);
