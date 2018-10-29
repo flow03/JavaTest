@@ -1,0 +1,189 @@
+//import java.util.Arrays;
+import java.util.Random;
+
+public class Quiz {
+
+    public enum Color{
+        BLACK,
+        BLUE,
+        CYAN,
+        GREEN,
+        MAGENTA,
+        RED,
+        WHITE,
+        YELLOW;
+
+        public static Color getRandomColor() {
+            Color result = BLACK;
+            int a = (int) (Math.random() * 8 + 1);
+            switch (a) {
+                case 1:
+                    result = BLUE; break;
+                case 2:
+                    result = CYAN; break;
+                case 3:
+                    result = GREEN; break;
+                case 4:
+                    result = MAGENTA; break;
+                case 5:
+                    result = RED; break;
+                case 6:
+                    result = WHITE; break;
+                case 7:
+                    result = YELLOW; break;
+                case 8:
+                    result = BLACK; break;
+                default:
+                    break;
+            }
+            return result;
+        }
+    }
+
+    public abstract class Shape {
+
+        private final Color color;
+
+        public Shape(Color color){this.color = color;}
+
+        public Color getColor(){return color;}
+
+        public abstract double getArea();
+    }
+
+    public class Point {
+        private final double x;
+        private final double y;
+
+        public Point(double x_, double y_){
+            this.x = x_;
+            this.y = y_;
+        }
+
+        public double getX() { return x; }
+        public double getY() { return y; }
+
+        @Override
+        public String toString() { return "("+ x +", "+ y +")"; }
+
+    }
+
+    public class Circle extends Shape {
+
+        private final Point center;
+        private final double radius;
+
+        public Circle(Point center_, double radius_, Color color_){
+            super(color_);
+            this.center = center_;
+            this.radius = radius_;
+        }
+
+        public Point getCenter() {return center;}
+
+        public double getRadius() {return radius; }
+
+        @Override
+        public double getArea(){return radius * radius * Math.PI;}
+
+        @Override
+        public String toString(){
+            return "Shape: Circle, " +
+                    "Area: " + String.format("%.2f", getArea()) +
+                    ", center: " + center +
+                    ", radius: " + String.format("%.2f", radius) +
+                    ", color: " + getColor() +
+                    ";";
+        }
+    }
+
+    public class Square extends Shape {
+        private final double size;
+
+        public Square(double size_of_side, Color color_){
+            super(color_);
+            this.size = size_of_side;
+        }
+
+        public double getSize() {return size; }
+
+        @Override
+        public double getArea(){return size * size;}
+
+        @Override
+        public String toString(){
+            return "Shape: Square, " +
+                    "Area: " + String.format("%.2f",getArea()) +
+                    ", side: " + String.format("%.2f", size) +
+                    ", color: " + getColor() +
+                    ";";
+        }
+    }
+
+    public class RightTriangle extends Shape {
+
+        private final double a;
+        private final double b;
+        private final double c;
+
+        public RightTriangle(double a_, double b_, Color color_){
+            super(color_);
+            this.a = a_;
+            this.b = b_;
+            this.c = Math.sqrt((a * a)+(b * b));
+        }
+
+        public double geroneArea() {
+            double p = (a + b + c) / 2;
+            return Math.sqrt(p * (p - a) * (p - b) * (p - c));
+        }
+
+
+        @Override
+        public double getArea() {return (a * b)/2;}
+
+        public double getHypotenuse() {return c;}
+
+        @Override
+        public String toString(){
+            return "Shape: RightTriangle, " +
+                    "Area: " + String.format("%.2f", getArea()) +
+                    ", hypotenuse: " + String.format("%.2f", getHypotenuse()) +
+                    ", color: " + getColor() +
+                    ";";
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Random r = new Random();
+
+        int size_i = r.nextInt(10) + 1;
+        Shape [] shapes = new Shape[size_i];
+
+
+        for (int i = 0; i < shapes.length; i++) {
+            int which_shape = r.nextInt(3);
+            if (which_shape == 0)
+                shapes[i] = new Quiz().new Circle(
+                        new Quiz().new Point(r.nextInt(10), r.nextInt(10)),
+                        r.nextDouble() * 10,
+                        Color.getRandomColor());
+            else if (which_shape == 1)
+                shapes[i] = new Quiz().new RightTriangle(
+                        r.nextInt(10),
+                        r.nextDouble() * 10,
+                        Color.getRandomColor());
+            else if (which_shape == 2)
+                shapes[i] = new Quiz().new Square(
+                        r.nextInt(10),
+                        Color.getRandomColor());
+
+            System.out.println(shapes[i]);
+        }
+
+
+        //System.out.println(Arrays.toString(shapes));
+
+    }
+}
